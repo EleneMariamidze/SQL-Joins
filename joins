@@ -1,0 +1,90 @@
+CREATE TABLE University (    
+  university_id INT PRIMARY KEY,    
+  university_name VARCHAR(35) NOT NULL);
+  
+CREATE TABLE Student (    
+  student_id INT PRIMARY KEY,    
+  university_id INT,    
+  name VARCHAR(20) NOT NULL,    
+  lastname VARCHAR(30) NOT NULL,    
+  FOREIGN KEY (university_id) REFERENCES University(university_id));
+  
+CREATE TABLE Lecturer (    
+  lecturer_id INT PRIMARY KEY,    
+  university_id INT,    
+  name VARCHAR(20) NOT NULL,    
+  lastname VARCHAR(30) NOT NULL,    
+  FOREIGN KEY (university_id) REFERENCES University(university_id));
+  
+CREATE TABLE Subjects (    
+  subject_id INT PRIMARY KEY,    
+  subject_name VARCHAR(50) NOT NULL);
+  
+CREATE TABLE Lecturer_subject (    
+  lecturer_subject_id INT PRIMARY KEY,    
+  lecturer_id INT,    subject_id INT,    
+  FOREIGN KEY (lecturer_id) REFERENCES Lecturer(lecturer_id),    
+  FOREIGN KEY (subject_id) REFERENCES Subjects(subject_id));
+  
+CREATE TABLE Student_subject (    
+  student_subject_id INT PRIMARY KEY,    
+  student_id INT,    
+  subject_id INT,    
+  credit INT,    
+  FOREIGN KEY (student_id) REFERENCES Student(student_id),    
+  FOREIGN KEY (subject_id) REFERENCES Subjects(subject_id));
+
+INSERT INTO University VALUES 
+(1, 'Skillwill');
+
+INSERT INTO Student VALUES
+    (1, 1, 'John', 'Doe'),
+    (2, 1, 'Jane', 'Smith'),
+    (3, 1, 'Bob', 'Johnson'),
+    (4, 1, 'Larry', 'Sloan'),
+    (5, 1, 'Mary','Gray') ;
+
+INSERT INTO Lecturer VALUES
+    (1, 1, 'George', 'Morison'),
+    (2, 1, 'Williams', 'Smith'),
+    (3, 1, 'Ana', 'Harisson');
+
+INSERT INTO Subjects VALUES
+    (1, 'Math'),
+    (2, 'History'),
+    (3, 'Chemistry'),
+    (4, 'SQL'),
+    (5, 'Architecture'),
+    (6, 'Psychology');
+
+INSERT INTO Student_subject VALUES
+    (1, 2, 5, 6),
+    (2, 1, 6, 5),
+    (3, 5, 3, 5),
+    (4, 2, 3, 5),
+    (5, 1, 5, 6),
+    (6, 5, 4, 6),
+    (7, 5, 6, 5),
+    (8, 5, 1, 5),
+    (9, 4, 1, 5),
+    (10, 4, 2, 5);
+
+INSERT INTO Lecturer_subject VALUES
+    (1, 2, 5),
+    (2, 1, 6),
+    (3, 2, 2),
+    (4, 2, 3),
+    (5, 1, 1),
+    (6, 3, 4),
+    (7, 1, 6);
+
+SELECT * FROM Lecturer
+LEFT JOIN Lecturer_subject ON Lecturer.lecturer_id = Lecturer_subject.lecturer_id
+LEFT JOIN Subjects ON Lecturer_subject.subject_id = Subjects.subject_id;
+
+SELECT * FROM Lecturer
+RIGHT JOIN Student_subject ON Student.student_id = Student_subject.student_id;
+
+SELECT *FROM Student
+INNER JOIN Student_subject ON Student.subject_id = Student_subject_subject_id;
+
